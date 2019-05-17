@@ -46,7 +46,9 @@ public class UserController {
     @RequestMapping(value = "/abc")
     @ResponseBody
     public AjaxResult abc(UserQuery query){
+        Subject subject = SecurityUtils.getSubject();
 
+        System.err.println(subject.getPrincipal());
         redisUtil.set("u","zheshiabcdf");
        return userService.getStall(query);
     }

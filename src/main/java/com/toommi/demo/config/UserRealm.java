@@ -35,16 +35,16 @@ public class UserRealm extends AuthorizingRealm {
         String tel = (String) getAvailablePrincipal(principals);
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         // 通过用户名从数据库获取权限字符串
-//        List<String> res = permissionService.getResNameByuser(tel);
+        List<String> res = permissionService.getResNameByuser(tel);
 
-//        info.addStringPermissions(res);
+        info.addStringPermissions(res);
 
-        Set<String> set = new HashSet<String>();
+//        Set<String> set = new HashSet<String>();
 //        set.add("users");
 //        info.setRoles(set);
 
-        set.add("user");
-        info.setStringPermissions(set);
+//        set.add("user");
+//        info.setStringPermissions(set);
 
         return info;
     }

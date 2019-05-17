@@ -35,6 +35,9 @@ public class ShiroConfiguration {
 
         //自定义过滤器
         Map<String, Filter> filterMap = new LinkedHashMap<>();
+
+        filterMap.put("requestURL", getURLPathMatchingFilter());
+
         shiroFilterFactoryBean.setFilters(filterMap);
         //权限控制map
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
@@ -45,8 +48,8 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/easyui/**", "anon");
 
 //        filterChainDefinitionMap.put("/user/**", "roles[user]");
-        filterChainDefinitionMap.put("/user/**", "perms[user]");
-        filterChainDefinitionMap.put("/account/**", "perms[account]");
+//        filterChainDefinitionMap.put("/user/**", "perms[user]");
+//        filterChainDefinitionMap.put("/account/**", "perms[account]");
 
         filterChainDefinitionMap.put("/css/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
@@ -56,7 +59,9 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/logout", "logout");
 
 
+        filterChainDefinitionMap.put("/user/**", "authc");
         filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/user/**", "requestURL");
 
 //        filterChainDefinitionMap = getResourceAll();
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
@@ -64,6 +69,14 @@ public class ShiroConfiguration {
 
     }
 
+    /**
+     *   访问 权限 拦截器
+     * @return
+     */
+    public URLPathMatchingFilter getURLPathMatchingFilter() {
+        return new URLPathMatchingFilter();
+
+    }
 
 
     /**
