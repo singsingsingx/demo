@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title></title>
+<link rel="stylesheet" href="css/reset.css" />
+<link rel="stylesheet" href="css/login.css" />
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/login.js"></script>
+</head>
+<body>
+	<div class="page">
+		<div class="loginwarrp">
+			<div class="logo">管理员登陆</div>
+			<div class="login_form">
+<div class="alert" style="display: none;text-align: center;">
+    <div class="alert_con">
+        <p  id="ts" style="color: red"></p>
+        <p style="line-height: 70px">
+        </p>
+    </div>
+</div>
+				<form id="Login" name="Login" method="post" action="">
+					<li class="login-item"><span>用户名：</span> <input type="text"
+						id="username" name="username" class="login_input"> <span
+						id="count-msg" class="error"></span></li>
+					<li class="login-item"><span>密 码：</span> <input
+						type="password" id="password" name="password" class="login_input">
+						<span id="password-msg" class="error"></span></li>
+					<!-- <li class="login-item verify">
+					<span>验证码：</span>
+					<input type="text" name="CheckCode" class="login_input verify_input">
+				</li>
+				<img src="/images/verify.png" border="0" class="verifyimg" />
+				<div class="clearfix"></div> -->
+					<li class="login-sub">
+					<input id="tj" type="button"  name="Submit" value="登录" />
+					
+					<input type="reset" name="Reset" value="重置" /></li>
+				</form>
+			</div>
+		</div>
+	</div>
+<script src="js/supersized.3.2.7.min.js"></script>
+<script src="js/supersized-init.js"></script>
+	<script type="text/javascript">
+	 $(".btn").click(function() {
+	        is_hide();
+	    });
+	    // 检查自己是否是顶级页面
+	    if (top != window) {// 如果不是顶级
+	        //把子页面的地址，赋值给顶级页面显示
+	        window.top.location.href = window.location.href;
+	    }
+		var u = $("input[name=username]");
+		var p = $("input[name=password]");
+		$("#tj").click(function() {
+			if (u.val() == '' || p.val() == '') {
+				$("#ts").html("用户名或密码不能为空");
+				return false;
+			} else {
+				/* var reg = /^[1][3,4,5,7,8][0-9]{9}$/; */
+				/* if (!reg.exec(u.val())) {
+				    $("#ts").html("用户名格式错误");
+				    is_show();
+				    return false;
+				}  */
+			}
+			console.debug(u+"-----");
+			login(u, p);
+		});
+		function login(u, p) {
+
+			$.ajax({
+						type : 'post',
+						url : "/login",
+						cache : false,
+						data : {
+							username : u.val(),
+							password : p.val()
+						},
+						dataType : 'json',
+						success : function(data) {
+							console.debug(data+"======");
+							if (data.code==200) {
+								location.href = "index.html";
+							} else {
+								$("#ts").html(data.message);
+								is_show();
+							}
+						},
+						error : function(data) {
+							$("#error").text("登录失败,请重试");
+						}
+					});
+		}
+
+		window.onload = function() {
+			var config = {
+				vx : 4,
+				vy : 4,
+				height : 2,
+				width : 2,
+				count : 100,
+				color : "121, 162, 185",
+				stroke : "100, 200, 180",
+				dist : 6000,
+				e_dist : 20000,
+				max_conn : 10
+			}
+			CanvasParticle(config);
+		}
+		
+	    function is_hide() {
+	        $(".alert").animate({
+	            "top" : "-40%"
+	        }, 300)
+	    }
+	    function is_show() {
+	        $(".alert").show().animate({
+	            "top" : "45%"
+	        }, 300)
+	    }
+	</script>
+	<script type="text/javascript" src="js/canvas-particle.js"></script>
+</body>
+</html>

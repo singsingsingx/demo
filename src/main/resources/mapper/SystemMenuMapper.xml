@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.toommi.demo.mapper.SystemMenuMapper">
+	<resultMap type="com.toommi.demo.domain.SystemMenu" id="systemmenu">
+		<id property="id" column="id" />
+		<result property="sn" column="sn" />
+		<result property="name" column="name" />
+		<result property="icon" column="icon" />
+		<result property="url" column="url" />
+		<result property="intro" column="intro" />
+		<association property="parent" javaType="com.toommi.demo.domain.SystemMenu">
+			<id property="id" column="p_id" />
+			<result property="sn" column="p_sn" />
+			<result property="name" column="p_name" />
+			<result property="icon" column="p_icon" />
+			<result property="url" column="p_url" />
+			<result property="intro" column="p_intro" />
+		</association>
+	</resultMap>
+	<resultMap type="com.toommi.demo.domain.SystemMenu" id="childMenu">
+		<id property="id" column="id" />
+		<result property="sn" column="sn" />
+		<result property="name" column="name" />
+		<result property="icon" column="icon" />
+		<result property="url" column="url" />
+		<result property="intro" column="intro" />
+		<association property="parent" javaType="com.toommi.demo.domain.SystemMenu">
+			<id property="id" column="parent_id" />
+		</association>
+	</resultMap>
+	<select id="get" parameterType="long" resultMap="systemmenu">
+		select s.*,p.id p_id,p.sn p_sn,p.icon p_icon,p.url p_url,p.intro p_intro
+			from systemmenu s LEFT JOIN systemmenu p ON s.parent_id = p.id 
+			where s.id = #{id}
+	</select>
+	<select id="getAll" resultMap="systemmenu">
+		select s.*,p.id p_id,p.sn p_sn,p.icon p_icon,p.url p_url,p.intro p_intro
+			from systemmenu s LEFT JOIN systemmenu p ON s.parent_id = p.id 
+	</select>
+	<insert id="save" parameterType="com.toommi.demo.domain.SystemMenu" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into systemmenu
+		(sn,`name`,parent_id,icon,url,intro)values
+		(#{sn},#{name},#{parent.id},#{icon},#{url},#{intro})
+	</insert>
+	<delete id="delete" parameterType="long">
+		delete from systemmenu where
+		id = #{id}
+	</delete>
+	<update id="update" parameterType="com.toommi.demo.domain.SystemMenu" >
+		update systemmenu set
+		`name`=#{name},
+		sn=#{sn},
+		parent_id=#{parent.id},
+		icon=#{icon},
+		url=#{url},
+		intro=#{intro}
+		where id = #{id}
+	</update>
+	<select id="findByName" parameterType="string" resultType="com.toommi.demo.domain.SystemMenu">
+	select * from systemmenu where `name` = #{name}
+	</select>
+	<update id="saveChildren" parameterType="com.toommi.demo.domain.SystemMenu">
+		update systemmenu set parent_id = #{id}
+		where id in 
+		<foreach collection="children"  item="i" separator="," open="(" close=")" >
+			#{i.id}
+		</foreach>
+	</update>
+	<update id="clearChildren" parameterType="com.toommi.demo.domain.SystemMenu">
+		update systemmenu set parent_id = #{parent.id}
+		where parent_id = #{id} 
+	</update>
+	<select id="getMenuByLogin" parameterType="string" resultMap="childMenu">
+			SELECT DISTINCT s.* FROM account e 
+		JOIN role_account re ON e.id = re.account_id
+		JOIN role r ON re.role_id = r.id
+		JOIN role_systemmenu rs ON r.id = rs.role_id
+		JOIN systemmenu s ON rs.systemmenu_id = s.id
+		WHERE e.tel = #{tel}
+	</select>
+	<!-- 查询非一级菜单 -->
+	<select id="getMenu" resultMap="systemmenu">
+		select
+		o.id,
+		o.sn,
+		o.name,
+		o.url,
+		o.icon,
+		o.intro
+		from systemmenu o
+		WHERE o.parent_id IS NOT NULL;
+	</select>
+	
+		<!-- 查询总条数 -->
+	<select id="findCountByQuery" resultType="int" parameterType="com.toommi.demo.query.SystemMenuQuery">
+		select count(o.id) from systemmenu o
+		<include refid="whereSql"></include>
+	</select>
+
+	<!-- 根据条件查询limit 还有角色没有加入进去 -->
+	<select id="findLimitByQuery" resultMap="systemMenuResultMap1"
+		parameterType="com.toommi.demo.query.SystemMenuQuery">
+		select
+		o.id,
+		o.sn,
+		o.name,
+		o.icon,
+		o.url,
+		o.intro,
+		o.parent_id,
+		s.name
+		sname
+		from systemmenu o
+		LEFT JOIN systemmenu s on s.id=o.parent_id
+		<include refid="whereSql" />
+		limit #{begin},#{end}
+	</select>
+	
+	<!-- 公共的查询条件 -->
+	<sql id="whereSql">
+		<where>
+			<if test="q!=null and q!=''">
+				and (o.sn like concat('%',#{q},'%') or o.name like
+				concat('%',#{q},'%'))
+			</if>
+			<!-- 高级查询 -->
+			<if test="url!=null and url!=''">
+				and o.url like concat('%',#{url},'%')
+			</if>
+			<if test="parentId!=null and parentId!=''">
+				and o.parent_id = #{parentId}
+			</if>
+
+		</where>
+	</sql>
+	
+	<resultMap type="com.toommi.demo.domain.SystemMenu" id="systemMenuResultMap1">
+		<id property="id" column="id" />
+		<result property="sn" column="sn" />
+		<result property="name" column="name" />
+		<result property="url" column="url" />
+		<result property="icon" column="icon" />
+		<result property="intro" column="intro" />
+		<association property="parent" javaType="com.toommi.demo.domain.SystemMenu">
+			<id property="id" column="parent_id" />
+			<result property="name" column="sname" />
+		</association>
+	</resultMap>
+	<!-- 保存中间表的操作 -->
+	<insert id="saveRoleMenu" parameterType="com.toommi.demo.domain.RoleMenu">
+		insert into  role_systemmenu(role_id,systemmenu_id)
+						values (#{role_id},#{systemmenu_id})
+	</insert>
+</mapper>

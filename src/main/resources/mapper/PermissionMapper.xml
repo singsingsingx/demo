@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.toommi.demo.mapper.PermissionMapper">
+	<resultMap type="com.toommi.demo.domain.Permission" id="permissionMap">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<collection column="id" property="resources" ofType="com.toommi.demo.domain.Resource"
+  			 select="findByPermissionId"> 
+  			 <id column="id" property="id"/>
+  			<result column="name" property="name"/>
+  			<result column="url" property="url"  />
+ 		</collection>
+	</resultMap>
+
+	<select id="get" parameterType="long" resultMap="permissionMap">
+	SELECT
+		p.*, r.id r_id,
+		r.`name` r_name,
+		r.url
+	FROM
+		permission p
+	LEFT JOIN permission_resource pr ON p.id =  pr.permission_id
+	JOIN resource r ON r.id = pr.resource_id  
+	where p.id = #{id}
+	</select>
+	<select id="getAll" resultMap="permissionMap">
+		SELECT
+		o.*
+		FROM
+		permission o
+	</select>
+	<insert id="save" parameterType="com.toommi.demo.domain.Permission" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into permission
+		(name)values
+		(#{name})
+	</insert>
+	<insert id="saveResource" parameterType="com.toommi.demo.domain.Permission">
+		insert into permission_resource
+		(permission_id,resource_id)values
+		<foreach collection="resources" item="resource" separator="," >
+			(#{id},#{resource.id}) 
+		</foreach>
+	</insert>
+	<delete id="delete" parameterType="long">
+		delete from permission where
+		id = #{id}
+	</delete>
+	<delete id="deleteResource" parameterType="long">
+		delete from permission_resource  where permission_id = #{id}
+	</delete>
+	<update id="update" parameterType="com.toommi.demo.domain.Permission">
+		update permission set
+		name=#{name} where id = #{id}
+	</update>
+	
+	<select id="getAllPerRes" resultType="java.util.LinkedHashMap">
+		SELECT
+		r.`name`,
+		r.url
+		FROM
+		permission o 
+		JOIN permission_resource pr ON o.id = pr.permission_id
+		JOIN resource r ON pr.resource_id = r.id
+	</select>
+	<select id="getResNameByuser" resultType="string" parameterType="string">
+		SELECT res.`name`,res.url FROM 
+		account e JOIN role_account re ON  e.id=re.account_id
+		JOIN role r ON re.role_id = r.id
+		JOIN permission_role pr ON r.id=pr.role_id
+		JOIN permission p ON pr.permission_id = p.id
+		JOIN permission_resource prs ON p.id= prs.permission_id
+		JOIN resource res ON res.id = prs.resource_id
+		WHERE e.tel = #{tel}
+	</select>
+	<sql id="whereSQl">
+		<where>
+			<if test="q!=null and q!=''">
+				and (o.name like concat('%',#{q},'%') )
+			</if>
+		</where>
+	</sql>
+	<select id="findCountByQuery" parameterType="com.toommi.demo.query.PermissionQuery" resultType="int">
+		select count(o.id) from permission o
+		<include refid="whereSQl"/>  
+	</select>
+	<select id="findLimitByQuery"  parameterType="com.toommi.demo.query.PermissionQuery" resultMap="permissionMap">
+		SELECT
+		o.*
+		FROM
+		permission o
+		<include refid="whereSQl"/>
+		limit #{begin},#{end}
+	</select>
+	<select id="findByPermissionId" resultType="com.toommi.demo.domain.Resource" parameterType="long">
+		select o.*
+		from
+		resource o
+		left join permission_resource pr on
+		pr.resource_id=o.id
+		left join permission p on pr.permission_id=p.id
+		where
+		p.id=#{permissionId}
+	</select>
+	<delete id="deleteRole" parameterType="long">
+		delete from permission_role  where permission_id = #{id}
+	</delete>
+</mapper>

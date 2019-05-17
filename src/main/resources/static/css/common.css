@@ -1,0 +1,176 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "黑体";
+	font-size: 22px;
+	color: #2C3849;
+}
+
+.nav-two p {
+	color: #666;
+	font-size: 20px;
+	height: 80px;
+	line-height: 80px;
+}
+
+button {
+	cursor: pointer;
+}
+
+ul {
+	list-style: none;
+}
+
+html,
+body {
+	width: 100%;
+	min-width: 1366px;
+}
+
+.header {
+	overflow: hidden;
+	width: 100%;
+}
+
+.header-left {
+	width: 2.33rem;
+	height: 70px;
+	background: #828bff;
+}
+
+.header-right {
+	width: 1.48rem;
+	overflow: hidden;
+	height: 70px;
+}
+
+.header-center {
+	width: 9.85rem;
+	height: 70px;
+}
+
+ul {
+	list-style: none;
+}
+
+button {
+	border: none;
+	outline: none;
+}
+
+.menu {
+	width: 100%;
+}
+
+.menu li {
+	width: 1.16rem;
+	height: 70px;
+	line-height: 70px;
+	text-align: center;
+	color: #9a9a9a;
+	font-size: 22px;
+	position: relative;
+}
+
+.menu li p {
+	position: absolute;
+	right: 0;
+	width: 4px;
+	height: 10px;
+	background: #828bff;
+	top: 30px;
+}
+
+.img-wraper-one {
+	width: 50%;
+	border-right: 1px solid #dadada;
+	height: 35px;
+	margin-top: 17.5px;
+}
+
+.img-wraper-two {
+	width: 50%;
+	border-left: 1px solid #DADADA;
+	height: 35px;
+	margin-top: 17.5px;
+}
+
+.img-wraper-one img,
+.img-wraper-two img {
+	display: block;
+	margin: 0 auto;
+}
+
+.content {
+	overflow: hidden;
+	width: 100%;
+}
+
+.left-content {
+	width: 2.34rem;
+}
+
+.right-content {
+	width: 11.32rem;
+	padding: 8px 0 0 0.28rem;
+	background: #dcdcf1;
+}
+
+.bg {
+	height: 2px;
+	width: 100%;
+	background: #828bff;
+}
+
+.pull-left {
+	float: left;
+}
+
+.pull-right {
+	float: right;
+}
+
+.clearfix:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.nav-one img {
+	margin-top: 27px;
+	margin-left: 0.12rem;
+	width: 72px;
+	height: 72px;
+}
+
+.nav-two img {
+	margin-left: 0.2rem;
+	margin-top: 30px;
+}
+
+.nav-two a {
+	color: #666;
+	text-decoration: none;
+}
+
+.nav-active a {
+	color: #FFFFFF;
+}
+
+.active {
+	background: #818BFF;
+}
+
+.active a {
+	color: #FFFFFF;
+}
+
+li a {
+	text-decoration: none;
+	color: #9a9a9a;
+}
+.active li{
+	color: #FFFFFF;
+	background: #818BFF;
+}

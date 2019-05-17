@@ -1,0 +1,22 @@
+<div>
+	<script id="template-one" type="Mustache-dom">
+		{{#result}}
+		<div class="items pull-left margin-left-five margin-top">
+			<i class='input_style checkbox_bg pull-left'><input type="checkbox" name="q" value="11" data-id="{{otherId}}"></i>
+			<p>{{otherName}}</p>
+		</div>
+		{{/result}}
+	</script>
+	<script id="template-two" type="Mustache-dom">
+		<option value="请选择服务器" disabled="disabled" selected="selected">请选择服务器</option>
+		{{#result}}
+		<option value="{{serviceId}}">{{serviceName}}</option>
+		{{/result}}
+	</script>
+	<script id="template-three" type="Mustache-dom">
+		<option value="请选择服务区" disabled="disabled" selected="selected">请选择服务区</option>
+		{{#result}}
+		<option value="{{serviceTwoId}}">{{serviceTwoName}}</option>
+		{{/result}}
+	</script>
+</div>

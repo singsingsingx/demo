@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.toommi.demo.mapper.RoleMapper">
+	<resultMap type="com.toommi.demo.domain.Role" id="role">
+		<id property="id" column="r_id" />
+		<result property="sn" column="rsn" />
+		<result property="name" column="r_name" />
+		<result property="updateTime" column="updateTime" />
+		<collection property="permissions" ofType="com.toommi.demo.domain.Permission">
+			<id property="id" column="p_id" />
+			<result property="name" column="p_name" />
+		</collection>
+		<collection property="menus" ofType="com.toommi.demo.domain.SystemMenu">
+			<id property="id" column="s_id" />
+			<result property="name" column="s_name" />
+			<result property="icon" column="icon" />
+			<result property="url" column="url" />
+			<association property="parent" javaType="com.toommi.demo.domain.SystemMenu">
+				<id column="parent_id" property="id"/>
+			</association>
+		</collection>
+	</resultMap>
+
+	<select id="get" parameterType="long" resultMap="role">
+		select r.id r_id,r.sn rsn,r.`name` r_name,r.updateTime updateTime,s.id s_id,s.`name` s_name,s.url,s.icon,s.parent_id,p.id p_id,p.`name` p_name
+			from role r
+			left JOIN role_systemmenu rs ON r.id = rs.role_id
+			left JOIN systemmenu s ON rs.systemmenu_id = s.id
+			left JOIN permission_role pr ON pr.role_id = r.id
+			left JOIN permission p ON pr.permission_id = p.id 
+		where	r.id =  #{id} 
+	</select>
+	
+	<!-- 抽取公共的查询条件 -->
+	<sql id="whereSql">
+		<where>
+			<if test="q!=null and q!=''">
+				(o.name like concat('%',#{q},'%') or o.updateTime like binary concat('%',#{q},'%'))
+			</if>
+		</where>
+	</sql>
+		<!-- 条件查询 -->
+	<select id="findCountByQuery" resultType="int" parameterType="com.toommi.demo.query.RoleQuery">
+		SELECT
+		count(o.id)
+		from role o
+		<include refid="whereSql" />
+	</select>
+	<select id="findLimitByQuery" parameterType="com.toommi.demo.query.RoleQuery" resultMap="roleMap">
+			select 
+			o.id,
+			o.sn,
+			o.`name`,
+			o.updateTime
+			from role o
+			<include refid="whereSql" />
+			order by ${sort} ${order}
+			limit #{begin},#{end}
+	</select>
+	<resultMap type="com.toommi.demo.domain.Role" id="roleMap">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="sn" column="sn" />
+		<result property="updateTime" column="updateTime" />
+		<collection property="permissions" ofType="com.toommi.demo.domain.Permission" column="id" select="com.toommi.demo.mapper.RoleMapper.findPermissions"/>
+	</resultMap>
+	<select id="findPermissions" parameterType="long" resultType="com.toommi.demo.domain.Permission">
+		SELECT
+			*
+		FROM
+			permission p
+		LEFT JOIN permission_role pr ON pr.permission_id = p.id
+		WHERE pr.role_id = #{id}
+	</select>
+	
+	<select id="getAll" resultMap="role">
+		select r.id r_id,r.sn rsn,r.`name` r_name,s.id s_id,s.`name`
+		s_name,s.url,s.icon,s.parent_id,p.id p_id,p.`name` p_name
+		from role r
+		left JOIN role_systemmenu rs ON r.id = rs.role_id
+		left JOIN systemmenu s ON rs.systemmenu_id = s.id
+		left JOIN permission_role pr ON pr.role_id = r.id
+		left JOIN permission p ON pr.permission_id = p.id
+	</select>
+	
+	<insert id="save" parameterType="com.toommi.demo.domain.Role" useGeneratedKeys="true"
+		keyColumn="id" keyProperty="id">
+		insert into role
+		(name,sn,updateTime)values
+		(#{name},#{sn},#{updateTime})
+	</insert>
+	<insert id="savePermission" parameterType="com.toommi.demo.domain.Role">
+			insert into permission_role
+			(role_id,permission_id)values
+			<foreach collection="permissions" item="permission" separator="," >
+			(#{id},#{permission.id})
+			</foreach>
+	</insert>
+	<insert id="saveSystemmenu" parameterType="com.toommi.demo.domain.Role">
+			insert into role_systemmenu
+			(role_id,systemmenu_id)values
+			<foreach collection="menus" item="systemmenu" separator="," >
+			(#{id},#{systemmenu.id})
+			</foreach>
+	</insert>
+	<delete id="delete" parameterType="long">
+		delete from role where
+		id = #{id}
+	</delete>
+	<delete id="deletePermission" parameterType="long">
+			delete from permission_role
+			where role_id = #{id}
+	</delete>
+	<delete id="deleteSystemmenu" parameterType="long">
+		delete from role_systemmenu
+		where role_id = #{id}
+	</delete>
+	<update id="update" parameterType="com.toommi.demo.domain.Role">
+		update role set
+		name=#{name},sn=#{sn},updateTime=#{updateTime} where id = #{id};
+	</update>
+	<!-- 查询用户权限 -->
+	<select id="getRole" resultType="com.toommi.demo.domain.Role" parameterType="long">
+		select r.id,r.`name`,r.sn from role r 
+		left join role_account er 
+		on r.id=er.role_id
+		left join account e
+		on e.id=er.account_id
+		where e.id=#{id}
+	</select>
+	
+	<!--找到员工的角色 -->
+	<select id="findByEmployeeId" parameterType="long" resultType="com.toommi.demo.domain.Role">
+		select o.id,o.sn,o.name from role o
+		LEFT JOIN role_account er on o.id=er.role_id
+		left join account a on a.id =er.account_id where
+		a.id=#{id}
+	</select>
+	
+	<select id="getAllRole" resultType="com.toommi.demo.domain.Role">
+		select o.id,o.sn,o.name from role o
+	</select>
+	<select id="getRoleMenu" resultMap="role">
+		select
+		r.id r_id,
+		r.sn rsn,
+		r.name r_name,
+		s.id s_id,
+		s.name s_name
+		from role r
+		left join role_systemmenu rs on rs.role_id=r.id
+		left join systemmenu s on s.id = rs.systemmenu_id
+		where s.parent_id is not null 
+		order by r.id
+	</select>
+</mapper>

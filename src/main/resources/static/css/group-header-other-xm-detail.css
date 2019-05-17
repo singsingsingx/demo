@@ -1,0 +1,44 @@
+.right-content-content-title{
+	width: 10.20rem;
+	border-bottom: 1px solid #dcdcdc;
+	
+}
+.right-content-content-title button{
+	width: 1.2rem;
+	height: 42px;
+	background: #818BFF;
+	border:1px solid #dcdcdc;
+	border-radius: 2px;
+	color: #FFFFFF;
+}
+.right-content-content-content{
+	padding-top: 5px;
+}
+.items-two{
+	height: auto;
+	overflow: hidden;
+}
+.items-two p{
+	height: 35px;
+	line-height: 35px;
+	color: #666666;
+	font-size: 18px;
+}
+.items-two span{
+	color: #666666;
+	font-size: 18px;
+}
+.items-two-item-one{
+	overflow: hidden;
+	width: ;
+}
+.items-two-item-one p{
+	padding-right: 0.26rem;
+}
+.items-two .text-blue{
+	color: #2c3849;
+	margin-left: ;
+}
+.margin-top{
+	margin-top: 17px;
+}

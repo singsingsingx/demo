@@ -1,0 +1,100 @@
+<div>
+	<script id="template-six" type="Mustache-dom">
+		<table>
+			<tbody>
+				<tr>
+					<td>订单号</td>
+					<td>项目</td>
+					<td>提交时间</td>
+					<td>客户名</td>
+					<td>客服名</td>
+					<td>订单价格</td>
+					<td>操作</td>
+				</tr>
+				{{#list}}
+				<tr>
+					<td>
+						<p style="width: 1.51rem;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;font-size: 13px;">{{orderId}}</p>
+					</td>
+					<td>
+						<p style="width: 1.51rem;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;font-size: 13px;">{{otherName}}</p>
+					</td>
+					<td>
+						<p style="font-size: 13px;">{{date}}</p>
+						<p>{{second}}</p>
+					</td>
+					<td>{{gameName}}</td>
+					<td>{{userName}}</td>
+					<td></td>
+					<td>
+						<p style="cursor: pointer;font-size: 13px;" data-id="{{orderId}}" class="assign-order" data-service="{{userName}}" data-date="{{date}}">分配</p>
+					</td>
+				</tr>
+				{{/list}}
+			</tbody>
+		</table>
+	</script>
+	<script id="template-one" type="Mustache-dom">
+		<div class="pull-left left">
+			{{#moneyModel}}
+			<p>{{otherName}}</p>
+			{{/moneyModel}}
+
+		</div>
+	</script>
+	<!--老板资料-->
+	<script id="template-two" type="Mustache-dom">
+		<!--<div class="pull-item-item-one pull-left">
+			<p>老板资料：</p>
+		</div>-->
+		<div class="pull-left left">
+			<div class="items-two-item-one">
+				<p class="pull-left"><span>游戏区服：</span><span class="text-blue">{{serviceArea}}</span></p>
+				<p class="pull-left">{{servierN}}</p>
+				<p class="pull-left">{{profession}}</p>
+				<p class="pull-left">{{campFaction}}</p>
+			</div>
+			<div class="items-two-item-one">
+				<p class="pull-left"><span>游戏账号：</span><span class="text-blue">{{gameUserId}}</span></p>
+				<p class="pull-left"><span>账号密码：</span><span>{{gamePwd}}</span></p>
+				<p class="pull-left"><span>子副账号：</span><span>{{gameChildUserId}}</span></p>
+			</div>
+
+		</div>
+	</script>
+	<!--接单价格-->
+	<script id="template-three" type="Mustache-dom">
+		<div class="pull-left left">
+			<div class="items-two-item-one">
+				<p class="pull-left">{{acceptOrder}}</p>
+				<p class="pull-left">代练周期：{{orderDay}}&nbsp;{{orderTime}}</p>
+			</div>
+
+		</div>
+	</script>
+	<!--订单状态-->
+	<script id="template-four" type="Mustache-dom">
+		<div class="pull-left left">
+			<div class="items-two-item-one">
+				<p class="pull-left">{{orderStatus}}</p>
+			</div>
+
+		</div>
+	</script>
+	<!--保密类型-->
+	<script id="template-five" type="Mustache-dom">
+		<div class="pull-left left">
+			<div class="items-two-item-one">
+				<p>{{saveType}}</p>
+			</div>
+
+		</div>
+	</script>
+	<script id="template-seven" type="Mustache-dom">
+		{{#result}}
+		<option value="{{otherId}}" style="font-size: 13px;">
+			{{otherName}}
+		</option>
+		{{/result}}
+	</script>
+</div>

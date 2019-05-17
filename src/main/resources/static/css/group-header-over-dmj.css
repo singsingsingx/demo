@@ -1,0 +1,52 @@
+.input-container select {
+    width: 1.5rem;
+    height: 36px;
+    outline: none;
+    border: 1px solid #bebebe;
+    border-radius: 2px;
+    font-size: 14px;
+    padding-left: 0.07rem;
+    margin-right: 0.25rem;
+    color: #666;
+}
+.table-header{
+	border: 1px solid #BEBEBE;
+}
+.table-header td{
+	color: #2c3849;
+}
+.table td{
+	border: none;
+	color: #9a9a9a;
+}
+.table td p{
+	color: #9a9a9a;
+}
+.order-num{
+	width: 1.38rem;
+}
+.begin-time{
+	width: 1.21rem;
+}
+.over-time{
+	width: 1.39rem;
+}
+.boss-num{
+	width: 0.83rem;
+}
+.eq-num{
+	width: 1.04rem;
+}
+.sold-eq{
+	width: 1.74rem;
+}
+.unsold-eq{
+	width: 1.05rem;
+}
+.wages{
+	
+	width: 1.03rem;
+}
+.operation{
+	width: 0.7rem;
+}

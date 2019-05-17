@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.toommi.demo.mapper.ResourceMapper">
+	<select id="get" parameterType="long" resultType="com.toommi.demo.domain.Resource">
+		select o.* from resource o where id = #{id}
+	</select>
+	<select id="getAll" resultType="com.toommi.demo.domain.Resource">
+		select o.* from resource o order by o.id
+	</select>
+	<insert id="save" parameterType="com.toommi.demo.domain.Resource">
+		insert into resource
+		(name,url)values
+		(#{name},#{url})
+	</insert>
+	<delete id="delete" parameterType="long">
+		delete from resource where id = #{id}
+	</delete>
+	<update id="update" parameterType="com.toommi.demo.domain.Resource">
+		update resource set name=#{name},url=#{url} where id = #{id}
+	</update>
+	<sql id="whereSQl">
+		<where>
+			<if test="q!=null and q!=''">
+				(o.name like concat('%',#{q},'%') )
+			</if>
+		</where>
+	</sql>
+	<select id="findCountByQuery" parameterType="com.toommi.demo.query.ResourceQuery" resultType="int">
+		select count(o.id) from resource o
+		<include refid="whereSQl"/>  
+	</select>
+	<select id="findLimitByQuery"  parameterType="com.toommi.demo.query.ResourceQuery" resultType="com.toommi.demo.domain.Resource">
+		select o.* from resource o
+		<include refid="whereSQl"/>
+		limit #{begin},#{end}
+	</select>
+	<delete id="deletePermission" parameterType="long">
+		delete from permission_resource  where resource_id = #{id}
+	</delete>
+</mapper>

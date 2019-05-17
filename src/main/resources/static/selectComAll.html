@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>企业列表</title>
+<script src="./plugins/layui/layui.js"></script>
+<script src="./plugins/jquery.min.js"></script>
+<link rel="stylesheet" href="./plugins/layui/css/layui.css" media="all">
+ <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet"
+	href="plugins/layui/css/modules/layer/default/layer.css" media="all">
+<style>
+.layui-layer-title {
+	padding: 0 80px 0 20px;
+	height: 42px;
+	line-height: 42px;
+	/* border-bottom: 1px solid #eee;*/
+	font-size: 14px;
+	color: #333;
+	overflow: hidden;
+	background-color: #00F7DE;
+	border-radius: 2px 2px 0 0;
+}
+
+.layui-layer-btn .layui-layer-btn0 {
+	background-color: #0ebf34;
+	color: #fff;
+	width: 300px;
+	text-align: center;
+	height: 40px;
+	line-height: 40px;
+}
+
+.new_div {
+	width: 500px;
+	height: 20px;
+	position: absolute;
+	left: 50px;
+	top: 170px;
+	border: none;
+}
+
+.ul_sty {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+	padding-left: 0px;
+	margin-top: 0px;
+	border: 1px solid #e0dddd;
+	border-radius: 8px;
+	border: none;
+}
+
+.li_sty {
+	font-size: 14px;
+	position: absolute;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: red;
+	margin-left: 5px;
+}
+
+.layui-form-select .layui-this{color:#1e3cff}
+</style>
+</head>
+
+<body>
+<div class="demoTable">
+  用户名：
+  <div class="layui-inline">
+    <input class="layui-input" name="userName" lay-verify="userName" id="demoUserName" autocomplete="off">
+  </div>
+  手机号：
+  <div class="layui-inline">
+    <input class="layui-input" name="userPhone" lay-verify="userPhone" id="demoUserPhone" autocomplete="off">
+  </div>
+    审核状态：
+  <div class="layui-inline">
+    <input class="layui-input" name="userStauts" lay-verify="userStauts" id="demoUserStauts" autocomplete="off">
+  </div>
+  <button class="layui-btn" data-type="reload">搜索</button>
+  <button class="layui-btn" data-type="shuaxin" onclick="shuxin()">刷新页面</button>
+  <button type="button" class="layui-btn" id="test3"><i class="layui-icon"></i>导入EXCEL</button>
+  <button class="layui-btn" style="width:10%;" name="exportExcel" onclick="exportExcel()">导出全部信息</button>
+</div>
+ 
+ 
+<table class="layui-hide" id="LAY_table_user" lay-filter="demo"></table> 
+               
+<script src="./plugins/layui/layui.js" charset="utf-8"></script>
+<script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-xs" lay-event="edit" >编辑/查看详情</a>
+</script>
+<script>
+		layui.use('table', function(){
+		  var table = layui.table,form = layui.form;
+		  //方法级渲染
+		  table.render({
+		    elem: '#LAY_table_user'
+		    //这里获取要展示的数据,后台把json 数据的key 按这些返回就直接展示在这里了  
+		    ,url: hostUrl+'user/selectAccount'
+		    ,cols: [[
+		    	{field:'userName',  title: '用户名', sort: true}
+		        ,{field:'userPhone', title: '手机号'}
+		        ,{field:'contact',  title: '联系方式', sort: true}
+		        ,{field:'industry',  title: '所属行业'}
+		        ,{field:'userType',  title: '用户类型', sort: true}
+		        ,{field:'money', title: '用户余额', sort: true}
+/* 		        ,{field:'userStauts',  title: '用户审核状态(1-未审核,2-已审核,3-审核未通过)'} */
+		        ,{field:'userStauts',  title: '审核状态'}
+		        ,{field:'address',  title: '地址', sort: true}
+ 		        ,{field:'createTime',  title: '创建时间', sort: true} 
+		        ,{field: 'right', align:'center',title:"编辑/查看详情", toolbar: '#barDemo'}
+		    ]]
+		    ,id: 'testUser'
+		    ,page: true
+		  });
+  
+		  var $ = layui.$, active = {
+		    reload: function(){
+		      var demoUserName = $('#demoUserName');
+		      var demoUserPhone = $('#demoUserPhone');
+		      var demoUserStauts= $('#demoUserStauts');
+		      //执行重载
+		      table.reload('testUser', {
+		        page: {
+		          curr: 1 //重新从第 1 页开始
+		        }
+		        ,where: {
+		        	userName: demoUserName.val(),
+		        	userPhone: demoUserPhone.val(),
+		        	userStauts: demoUserStauts.val()
+		        }
+		      });
+		    }
+		  };
+		  
+		  $('.demoTable .layui-btn').on('click', function(){
+		    var type = $(this).data('type');
+		    active[type] ? active[type].call(this) : '';
+		  });
+		});
+
+		layui.use('table', function(){
+			  var table = layui.table,form = layui.form;
+			  //监听表格复选框选择
+			  table.on('checkbox(demo)', function(obj){
+			    console.log(obj)
+			  });
+			  //监听工具条
+			  table.on('tool(demo)', function(obj){
+				console.log(obj);
+			    var data = obj.data;
+			    var daleteUser=$("input[name='daleteUser']").val();
+			    if(obj.event === 'detail'){
+			      layer.msg('ID：'+ data.id + ' 的查看操作');
+			    } else if(obj.event === 'del'){
+			      layer.confirm('真的删除行么', function(index){
+			        obj.del();
+			        layer.close(index);
+			      });
+			    } else if(obj.event === 'edit'){
+			      /* layer.alert('编辑行：<br>'+ JSON.stringify(data)) */
+			      location.href = 'selectCom.html?userId='+data.userId;
+			    }else if(obj.event === 'editExe'){
+				      /* layer.alert('编辑行：<br>'+ JSON.stringify(data)) */
+				  } 
+			  });
+			  
+			  layui.use('upload', function(){
+				  var $ = layui.jquery
+				  ,upload = layui.upload;
+				 upload.render({
+				    elem: '#test3'
+				    ,url:  hostUrl+'/version1/user/excelImport'
+				    ,accept: 'file' //普通文件
+				    ,done: function(res){
+				    	alert(res.msg);
+				    }
+				  });
+				});
+			    
+			  var $ = layui.$, active = {
+			    getCheckData: function(){ //获取选中数据
+			      var checkStatus = table.checkStatus('testUser')
+			      ,data = checkStatus.data;
+			      layer.alert(JSON.stringify(data));
+			    }
+			    ,getCheckLength: function(){ //获取选中数目
+			      var checkStatus = table.checkStatus('testUser')
+			      ,data = checkStatus.data;
+			      layer.msg('选中了：'+ data.length + ' 个');
+			    }
+			    ,isAll: function(){ //验证是否全选
+			      var checkStatus = table.checkStatus('testUser');
+			      layer.msg(checkStatus.isAll ? '全选': '未全选')
+			    }
+			  };
+			  
+			  form.on('checkbox(lockDemo)', function(obj){
+				  var strs = new Array();
+				  var data='';
+				  strs=obj.value.split("-");
+				  if(strs[0]==1)
+				  {
+					  data=2  
+				  }	else{
+					  data=1;
+				  } 
+				  
+				   $.ajax({
+						 type: "POST",//方法类型
+			       dataType: "json",//预期服务器返回的数据类型
+			       url: hostUrl+'/version1/user/updateUser?userId='+strs[1]+'&deleteUser='+data,//url
+			       data: $('#from1').serialize(),
+			       success: function (result) {
+			    	   
+			       }})
+				  }); 
+			  
+			  $('.demoTable .layui-btn').on('click', function(){
+			    var type = $(this).data('type');
+			    active[type] ? active[type].call(this) : '';
+			  });
+			});
+			
+			function shuxin()
+			{
+				location.href = 'selectComAll.html';
+			}
+			
+			function exportExcel()
+			{
+				location.href=hostUrl+'/version1/user/exportExcel?userType=2';//url
+			}
+			
+</script>
+
+</body>
+</html>
