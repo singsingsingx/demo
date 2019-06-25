@@ -12,8 +12,13 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @MapperScan("com.toommi.demo.mapper")
 public class DemoApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
-	}
+//    @Override
+//    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+//        return application.sources(DemoApplication.class);
+//    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
 
 }

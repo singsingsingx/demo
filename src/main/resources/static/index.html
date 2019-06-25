@@ -43,9 +43,8 @@
             </a>
                 <dl class="layui-nav-child skin">
                     <dd>
-                        <a href="javascript:;" data-skin="default"
-                           style="color: #393D49;"><i class="layui-icon">&#xe658;</i>
-                            默认</a>
+                        <a href="javascript:;" data-skin="default" style="color: #393D49;"><i
+                                class="layui-icon">&#xe658;</i>默认</a>
                     </dd>
                     <dd>
                         <a href="javascript:;" data-skin="orange" style="color: #ff6700;"><i
@@ -92,11 +91,29 @@
                             </a>
                         </dd>
                     </dl>
+                </li>
+                <li id="syMaintenance" class="layui-nav-item"><a class=""
+                                                                 href="javascript:;"><i class="fa fa-plug"
+                                                                                        aria-hidden="true"></i><span>
+								企业管理</span></a>
                     <dl class="layui-nav-child">
                         <dd id="addUser">
                             <a href="javascript:;" data-url="selectComAll.html"
-                               data-icon="fa-user" data-title="用户列表2" kit-target data-id='11'>
-                                <i class="layui-icon">&#xe6c6;</i><span>用户列表2</span>
+                               data-icon="fa-user" data-title="企业列表" kit-target data-id='111'>
+                                <i class="layui-icon">&#xe6c6;</i><span>企业列表</span>
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+                <li id="syMaintenance" class="layui-nav-item"><a class=""
+                                                                 href="javascript:;"><i class="fa fa-plug"
+                                                                                        aria-hidden="true"></i><span>
+								平台职业管理</span></a>
+                    <dl class="layui-nav-child">
+                        <dd id="addApp">
+                            <a href="javascript:;" data-url="workUser.html"
+                               data-icon="fa-user" data-title="职位列表" kit-target data-id='2'>
+                                <i class="layui-icon">&#xe6c6;</i><span>职位列表</span>
                             </a>
                         </dd>
                     </dl>
@@ -115,15 +132,14 @@
 
     <div class="layui-footer">
         <!-- 底部固定区域 -->
-        ©我
+        &copy;务工网后台管理
+        <!--<a href="http://kit.zhengjinfan.cn/">kit.zhengjinfan.cn/</a> MIT license-->
     </div>
 </div>
-<!-- <script type="text/javascript">
-    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-    document.write(unescape("%3Cspan id='cnzz_stat_icon_1264021086'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1264021086%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
-</script> -->
+
 <script src="./plugins/layui/layui.js"></script>
 <script>
+
 
     //注销
     $("#zhuxiao").click(function () {

@@ -21,4 +21,6 @@ public interface PermissionMapper extends BaseMapper<Permission> {
 
     //根据用户名拿到对应权限的资源名
     List<String> getResNameByuser(String username);
+
+    List<String> getResourceByLogin(String principal);
 }

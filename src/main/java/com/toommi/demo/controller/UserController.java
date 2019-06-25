@@ -46,10 +46,9 @@ public class UserController {
     @RequestMapping(value = "/abc")
     @ResponseBody
     public AjaxResult abc(UserQuery query){
-        Subject subject = SecurityUtils.getSubject();
-
-        System.err.println(subject.getPrincipal());
-        redisUtil.set("u","zheshiabcdf");
+//        Subject subject = SecurityUtils.getSubject();
+//        String abc = redisUtil.get("abc");
+//        redisUtil.set("u","zheshiabcdf");
        return userService.getStall(query);
     }
 
@@ -57,8 +56,8 @@ public class UserController {
     @RequestMapping(value = "/userJson")
     @ResponseBody
     public AjaxResult userJson(UserQuery query){
-        System.out.println("呵呵"+redisUtil.get("u"));
-        redisUtil.setex("abc", 10, "abcbefghijklmnopq");
+//        System.out.println("呵呵"+redisUtil.get("u"));
+//        redisUtil.setex("abc", 10, "abcbefghijklmnopq");
 
         String abc =  redisUtil.get("abc");
 

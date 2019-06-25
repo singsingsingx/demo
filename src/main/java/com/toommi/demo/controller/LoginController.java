@@ -28,7 +28,6 @@ public class LoginController {
     // 显示登录页面
     @RequestMapping(method = RequestMethod.GET, value = "/login")
     public String login() {
-        System.err.println("跳转登录");
         return "login.html";
     }
 

@@ -12,4 +12,6 @@ public interface IPermissionService extends IBaseService<Permission>{
     List<Map<String,String>> getAllPerRes();
 
     List<String> getResNameByuser(String tel);
+
+    List<String> getResourceByLogin(String principal);
 }

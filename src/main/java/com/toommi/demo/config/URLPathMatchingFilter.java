@@ -28,7 +28,7 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
 
     public static URLPathMatchingFilter testUtils;
 
-//    上面的 @Autowired 注入失败 使用此方式
+    //    上面的 @Autowired 注入失败 使用此方式
     @PostConstruct
     public void init() {
         testUtils = this;
@@ -53,10 +53,12 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
         }
 
         String principal = (String) subject.getPrincipal();
-        List<String> resNameByuser = testUtils.permissionService.getResNameByuser(principal);
+//        List<String> resNameByuser = testUtils.permissionService.getResNameByuser(principal);
+
+        List<String> resourceByLogin = testUtils.permissionService.getResourceByLogin(principal);
 
         boolean hasPermission = false;
-        for (String s : resNameByuser) {
+        for (String s : resourceByLogin) {
             if (requestURL.equals(s)) {
                 hasPermission = true;
                 break;
@@ -70,13 +72,16 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
             subject.getSession().setAttribute("ex", ex);
 //            WebUtils.issueRedirect(request, response, "/403.html");
 
+
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             String xhr = httpRequest.getHeader("X-Requested-With");
             if ("XMLHttpRequest".equalsIgnoreCase(xhr)) {
                 HttpServletResponse httpServletResponse = (HttpServletResponse) response;
                 httpServletResponse.setContentType("application/json; charset=UTF-8");
                 PrintWriter writer = httpServletResponse.getWriter();
-                writer.print("{\"code\":400,\"count\":null,\"msg\":\"无权限\",\"object\":\"null\"}");
+                writer.print("{\"code\":400,\"count\":null,\"msg\":\"无权限\",\"object\":null}");
+            } else {
+                WebUtils.issueRedirect(request, response, "/403.html");
             }
             return false;
 

@@ -23,6 +23,7 @@ public interface UserMapper extends BaseMapper<User> {
     @Select("select id,name username, tel, password,salt, state getMemberMoney,img isNo from user limit #{page},#{limit}")
     List<Map<String ,Object>> selectAccount(@Param("page") Integer page, @Param("limit") Integer limit);
 
-    @Select("select * from account where tel=#{userName}")
+//    @Select("select id, from account where tel=#{userName}")
+    @Select("select id,username,tel,password,state,salt from account where tel=#{userName}")
     Account findByTel(String userName);
 }

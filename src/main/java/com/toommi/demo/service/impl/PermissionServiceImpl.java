@@ -55,6 +55,8 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
         return permissionMapper.getResNameByuser(tel);
     }
 
-
-
+    @Override
+    public List<String> getResourceByLogin(String principal) {
+        return permissionMapper.getResourceByLogin(principal);
+    }
 }

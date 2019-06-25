@@ -74,6 +74,18 @@
 		JOIN resource res ON res.id = prs.resource_id
 		WHERE e.tel = #{tel}
 	</select>
+
+    <select id="getResourceByLogin" resultType="string" parameterType="string">
+        SELECT res.url FROM
+        account e JOIN role_account re ON  e.id=re.account_id
+        JOIN role r ON re.role_id = r.id
+        JOIN permission_role pr ON r.id=pr.role_id
+        JOIN permission p ON pr.permission_id = p.id
+        JOIN permission_resource prs ON p.id= prs.permission_id
+        JOIN resource res ON res.id = prs.resource_id
+        WHERE e.tel = #{tel}
+    </select>
+
 	<sql id="whereSQl">
 		<where>
 			<if test="q!=null and q!=''">

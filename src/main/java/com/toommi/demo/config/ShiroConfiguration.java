@@ -45,7 +45,8 @@ public class ShiroConfiguration {
 
 
         filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/easyui/**", "anon");
+        filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/druid/index.html", "anon");
 
 //        filterChainDefinitionMap.put("/user/**", "roles[user]");
 //        filterChainDefinitionMap.put("/user/**", "perms[user]");

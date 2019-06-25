@@ -18,6 +18,7 @@ public class MainController {
 
     @RequestMapping(value = "/list")
     public String list(){
+        System.err.println("main/list");
         return "main";
     }
 
