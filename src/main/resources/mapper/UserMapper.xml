@@ -67,7 +67,7 @@
         order by #{sort} ASC
         limit #{begin},#{end}
     </select>
-    <select id="getStall" resultType="Map" parameterType="com.toommi.demo.query.UserQuery">
+    <select id="getStall" resultType="java.util.Map" parameterType="com.toommi.demo.query.UserQuery">
         SELECT * FROM user
     </select>
 </mapper>

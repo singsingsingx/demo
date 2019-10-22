@@ -67,7 +67,6 @@
 				    return false;
 				}  */
 			}
-			console.debug(u+"-----");
 			login(u, p);
 		});
 		function login(u, p) {
@@ -82,7 +81,6 @@
 						},
 						dataType : 'json',
 						success : function(data) {
-							console.debug(data+"======");
 							if (data.code==200) {
 								location.href = "index.html";
 							} else {
