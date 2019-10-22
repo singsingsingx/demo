@@ -12,7 +12,6 @@ public class MyFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        System.err.println("来了么?");
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
