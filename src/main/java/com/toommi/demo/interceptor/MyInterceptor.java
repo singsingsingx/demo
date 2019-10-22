@@ -23,6 +23,8 @@ public class MyInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
+
+
         System.out.println(request.getServletPath());
         System.out.println(request.getLocalPort());
 
