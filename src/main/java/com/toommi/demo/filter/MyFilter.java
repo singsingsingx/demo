@@ -1,4 +1,4 @@
-package com.toommi.demo.config;
+package com.toommi.demo.filter;
 
 import javax.servlet.*;
 import java.io.IOException;
